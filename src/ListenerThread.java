@@ -9,9 +9,9 @@ import java.io.IOException;
  */
 public class ListenerThread implements Runnable{
     private BufferedReader in;
-    private String id;
+    private int id;
 
-    public ListenerThread(BufferedReader in, String id) {
+    public ListenerThread(BufferedReader in, int id) {
         this.in = in;
         this.id = id;
     }
@@ -21,19 +21,11 @@ public class ListenerThread implements Runnable{
         String msg = null;
         while (true) {
             try {
-                msg = in.readLine();
+                msg = in.readLine(); //Here users will be sent locations of birds and pipes to display?
             } catch (IOException e) {
                 //e.printStackTrace();
             }
-            if (msg.contains(": [")) {
-                String checkid = msg.substring(msg.indexOf("[")+1);
-                checkid = checkid.substring(0, checkid.indexOf("]"));
-                if (checkid.equals(id)) {
-                    System.out.println("Private message from " + msg.substring(0,msg.indexOf(": ")+2) + msg.substring(msg.indexOf("]")+1));
-                }
-            } else {
-                System.out.println(msg);
-            }
+            System.out.println(msg);
         }
     }
 

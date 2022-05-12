@@ -15,6 +15,7 @@ public class Controller implements Runnable{
     //private Render view;
     private model model;
     private int port;
+    private serverSocketer serv;
 
     public Controller() {
         port = Integer.parseInt(JOptionPane.showInputDialog(null,"Select a Port\nFor example 4823","Choose port",JOptionPane.QUESTION_MESSAGE));
@@ -24,7 +25,7 @@ public class Controller implements Runnable{
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("Waiting for connections!");
-            serverSocketer serv = new serverSocketer(serverSocket);
+            serv = new serverSocketer(serverSocket);
             Thread listener = new Thread(serv);
             listener.start();
 
@@ -46,7 +47,8 @@ public class Controller implements Runnable{
             long now = System.currentTimeMillis();
             if (now - lastTime > deltaT) {
                 model.update();
-                //view.draw(model.Balls());
+
+                serv.Send(model.getBirds() + " och " + model.getPipes());
 
                 lastTime = now;
             }

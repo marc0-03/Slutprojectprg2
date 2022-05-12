@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class ListenerThreadServer implements Runnable{
     private ArrayList<PrintWriter> out = new ArrayList<PrintWriter>();
     private BufferedReader in;
+    private int id;
+    private boolean firstmessage=true;
 
 
     public ListenerThreadServer(BufferedReader in, ArrayList<PrintWriter> out) {
@@ -30,6 +32,11 @@ public class ListenerThreadServer implements Runnable{
         while (true) {
                 try {
                     msg = in.readLine();
+
+                    if (firstmessage){
+                        firstmessage=false;
+                    }
+                    //When you get the command to jump take the ID and jump that bird.
                     for (int x = 0; x < out.size(); x++) {
                         out.get(x).println(msg);
                     }
@@ -51,4 +58,5 @@ public class ListenerThreadServer implements Runnable{
     public void add(PrintWriter out) {
         this.out.add(out);
     }
+
 }

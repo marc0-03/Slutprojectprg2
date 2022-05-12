@@ -36,8 +36,13 @@ public class serverSocketer implements Runnable{
                 Threads.get(Threads.size()-1).start();
                 System.out.println("New user connected");
             } catch (IOException e) {
-            }
 
+            }
+        }
+    }
+    public void Send(String s){
+        for (PrintWriter out: outs){
+         out.println(s);
         }
     }
 }

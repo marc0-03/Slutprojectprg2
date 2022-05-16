@@ -11,19 +11,28 @@ import java.util.Scanner;
 public class Client implements Runnable{
     private static PrintWriter out;
     private static int id;
+    private boolean running;
+    private Socket socket;
+    private Thread thread;
+    private view view;
 
     public Client(){
+        view = new view();
+        JFrame frame = new JFrame("My Birds");
+        frame.setSize(1200,800);
+        frame.add(view);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        view.addKeyListener(new KL());
+        frame.setVisible(true);
 
-    }
 
-    public static void main(String[] args) {
         boolean run = true;
         String ip = "localhost";
         String name = JOptionPane.showInputDialog(null,"Name?","Connect to..",JOptionPane.QUESTION_MESSAGE);
         int port = Integer.parseInt(JOptionPane.showInputDialog(null,"Select a Port\nFor example 4823","Choose port",JOptionPane.QUESTION_MESSAGE));
-        id = (int) Math.random()*100;
-        Socket socket = null;
-
+        id = (int) (Math.random()*100);
+        socket = null;
 
 
         try {
@@ -38,29 +47,46 @@ public class Client implements Runnable{
             Scanner tgb = new Scanner(System.in);
             out = new PrintWriter(socket.getOutputStream(),true);
 
-            ListenerThread in = new ListenerThread(new BufferedReader(new InputStreamReader(socket.getInputStream())), id);
+            ListenerThread in = new ListenerThread(new BufferedReader(new InputStreamReader(socket.getInputStream())), id, view);
             Thread listener = new Thread(in);
             listener.start();
 
-            while (run) {
-                String msg;
-                msg = tgb.nextLine();
-
-                out.println(name + ": " + msg);
-
-            }
-
-            out.close();
-            socket.close();
-            System.out.println("Done!");
         } catch (Exception e) {
             System.out.println("Client failed to communicate");
         }
     }
 
+    public static void main(String[] args) {
+        Client c = new Client();
+        c.start();
+    }
+    public synchronized void start() {
+        running = true;
+        thread = new Thread(this);
+        thread.start();
+    }
+    public synchronized void stop() {
+        running = false;
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void run() {
+        while (running) {
 
+        }
+        out.close();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Done!");
+        stop();
     }
 
     private class KL implements KeyListener {

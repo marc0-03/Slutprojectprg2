@@ -47,7 +47,7 @@ public class Client implements Runnable{
             Scanner tgb = new Scanner(System.in);
             out = new PrintWriter(socket.getOutputStream(),true);
 
-            ListenerThread in = new ListenerThread(new BufferedReader(new InputStreamReader(socket.getInputStream())), id, view);
+            ListenerThread in = new ListenerThread(socket.getInputStream(), id, view);
             Thread listener = new Thread(in);
             listener.start();
 

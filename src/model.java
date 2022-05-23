@@ -1,9 +1,10 @@
 import sun.plugin2.message.Pipe;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class model {
+public class model implements Serializable{
     private ArrayList<Bird> Birds = new ArrayList<Bird>();
     private ArrayList<Obstacle> Pipes = new ArrayList<Obstacle>();
     private int Pipecount;
@@ -79,5 +80,20 @@ public class model {
     }
     public ArrayList<Obstacle> getPipes(){
         return Pipes;
+    }
+
+    public void JumpBird(int id){
+        for (Bird bird : Birds) {
+            if (bird.getId()==id){
+                bird.RISE();
+                bird.Jump();
+            }
+        }
+
+        System.out.print("BIRD ID = " + id + " | JUMPED");
+    }
+    public void CreateBird(int id){
+        Birds.add(new Bird(id));
+        System.out.println("BIRD CREATED ID = " + id);
     }
 }

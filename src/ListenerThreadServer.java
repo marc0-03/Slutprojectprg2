@@ -11,37 +11,42 @@ import java.util.ArrayList;
  * @author Magnus Silverdal
  */
 public class ListenerThreadServer implements Runnable{
-    private ArrayList<PrintWriter> out = new ArrayList<PrintWriter>();
     private BufferedReader in;
     private int id;
     private boolean firstmessage=true;
+    private model model;
 
 
-    public ListenerThreadServer(BufferedReader in, ArrayList<PrintWriter> out) {
+    public ListenerThreadServer(BufferedReader in, model model) {
         this.in = in;
-        for (PrintWriter p : out) {
-            this.out.add(p);
-        }
-    }
-    public ListenerThreadServer() {
-
+        this.model = model;
     }
 
     @Override
     public void run() {
         String msg = null;
+        int id;
         while (true) {
                 try {
                     msg = in.readLine();
+                    id = Integer.parseInt(msg);
 
                     if (firstmessage){
                         firstmessage=false;
+                        model.CreateBird(id);
+                        //create bird
                     }
+                    model.JumpBird(id);
+                    //jump bird with id = msg
+
                     //When you get the command to jump take the ID and jump that bird.
+
+                    /*
                     for (int x = 0; x < out.size(); x++) {
                         out.get(x).println(msg);
                     }
                     System.out.println(msg);
+                     */
                 } catch (IOException e) {
                     //e.printStackTrace();
                 }
@@ -55,9 +60,4 @@ public class ListenerThreadServer implements Runnable{
             e.printStackTrace();
         }
     }
-
-    public void add(PrintWriter out) {
-        this.out.add(out);
-    }
-
 }

@@ -1,6 +1,7 @@
 import java.awt.*;
+import java.io.Serializable;
 
-public class Bird {
+public class Bird implements Serializable {
     private double Y,SpeedY;
     private Color color;
     private int id, score;
@@ -16,8 +17,15 @@ public class Bird {
 
     }
 
+    public Color getColor(){
+        return color;
+    }
+
     public double getY(){
         return Y;
+    }
+    public int getId(){
+        return id;
     }
 
     public void Jump(){
@@ -46,5 +54,9 @@ public class Bird {
         Y=400;
         alive=true;
         SpeedY=5;
+    }
+
+    public void RISE(){
+        alive=true;
     }
 }

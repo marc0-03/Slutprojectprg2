@@ -18,6 +18,8 @@ public class Controller implements Runnable{
     private serverSocketer serv;
 
     public Controller() {
+        model = new model();
+
         port = Integer.parseInt(JOptionPane.showInputDialog(null,"Select a Port\nFor example 4823","Choose port",JOptionPane.QUESTION_MESSAGE));
         ServerSocket serverSocket;
         System.out.println("Server started.");
@@ -25,7 +27,7 @@ public class Controller implements Runnable{
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("Waiting for connections!");
-            serv = new serverSocketer(serverSocket);
+            serv = new serverSocketer(serverSocket, model);
             Thread listener = new Thread(serv);
             listener.start();
 
@@ -33,8 +35,6 @@ public class Controller implements Runnable{
             e.printStackTrace();
             System.out.println("Server fail");
         }
-
-        model = new model();
     }
 
 
@@ -47,8 +47,11 @@ public class Controller implements Runnable{
             long now = System.currentTimeMillis();
             if (now - lastTime > deltaT) {
                 model.update();
-
-                serv.Send(model.getBirds() + " och " + model.getPipes());
+                try {
+                    serv.send(model.getBirds(), model.getPipes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 lastTime = now;
             }

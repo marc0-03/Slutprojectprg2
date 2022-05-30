@@ -51,6 +51,7 @@ public class ListenerThread implements Runnable{
                 e.printStackTrace();
             }
             System.out.println("OBJECTS: "+objects);
+            objects=null;
 
             //turn msg into cordinates
         }

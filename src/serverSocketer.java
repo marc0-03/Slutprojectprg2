@@ -40,11 +40,6 @@ public class serverSocketer implements Runnable{
             }
         }
     }
-    public void Send(model s){
-        for (PrintWriter out: outs){
-         out.println(s);
-        }
-    }
     public void send(ArrayList<Bird> Birds, ArrayList<Obstacle> Pipes) throws IOException {
         for (ObjectOutputStream oout: oouts){
             System.out.println("BIRDS SENDING: "+Birds);

@@ -1,6 +1,7 @@
 import java.awt.*;
+import java.io.Serializable;
 
-public class Obstacle {
+public class Obstacle implements Serializable {
     public double X,Y, Speed;
     private Rectangle hitBox;
 
